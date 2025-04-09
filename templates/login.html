@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center gap-2 mb-4">
+    <h1>Login</h1>
+    <a href="{% url 'signup' %}" class="text-decoration-none">Need an account?</a>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <form method="post" action="{% url 'login' %}" class="card">
+            <div class="card-body">
+                
+                
+                <div class="mb-3">
+                    <label for="username" class="form-label">Login</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                    
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-danger mt-2">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    <button type="submit" class="btn btn-primary">Log in</button>
+                    <a href="#" class="text-muted small">Forgot password?</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
