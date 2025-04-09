@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ask Question - ASK_ME{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2>Ask a Question</h2>
+        <form method="post" action="{% url 'ask' %}">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="title" maxlength="100" required>
+                {% if form.title.errors %}
+                    <div class="text-danger">{{ form.title.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3">
+                <label for="content" class="form-label">Content</label>
+                <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+                {% if form.content.errors %}
+                    <div class="text-danger">{{ form.content.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3">
+                <label for="tags" class="form-label">Tags</label>
+                <input type="text" class="form-control" id="tags" name="tags" maxlength="50" placeholder="python, django, web">
+                {% if form.tags.errors %}
+                    <div class="text-danger">{{ form.tags.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Submit Question</button>
+        </form>
+    </div>
+{% endblock %}

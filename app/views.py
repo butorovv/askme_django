@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib import messages
 from django.shortcuts import redirect
+
 def paginate(objects_list, request, per_page=10):
     paginator = Paginator(objects_list, per_page)
     page_number = request.GET.get('page', 1)
@@ -22,13 +23,12 @@ def new_questions(request):
             'id': i,
             'title': f'Вопрос {i}',
             'text': f'Текст вопроса {i}',
-            'answers_count': i % 5,  # Единообразие именования
-            'rating': i * 2 % 10,   # Добавили рейтинг
-            'tags': [{'name': 'new'}, {'name': 'django'}],  # Добавили теги
+            'answers_count': i % 5,  
+            'rating': i * 2 % 10,   
+            'tags': [{'name': 'new'}, {'name': 'django'}], 
             'author': {'username': f'User{i}', 'avatar_url': '/static/images/avatar.jpg'}
         })
     
-    # Сортировка по новизне (обратный порядок)
     questions = sorted(questions, key=lambda x: x['id'], reverse=True)
     
     page, paginator = paginate(questions, request)
@@ -54,7 +54,7 @@ def hot_questions(request):
             'author': {'username': f'HotUser{i}', 'avatar_url': '/static/images/avatar.jpg'}
         })
     
-    # Сортировка по рейтингу
+
     questions = sorted(questions, key=lambda x: x['rating'], reverse=True)
     
     page, paginator = paginate(questions, request)
@@ -68,7 +68,6 @@ def hot_questions(request):
     })
 
 def question(request, question_id):
-    # Пример данных - замените на реальную логику
     question_data = {
         'id': question_id,
         'title': f'Вопрос {question_id}',
@@ -84,7 +83,7 @@ def question(request, question_id):
         'best_members': [{'username': 'Expert1'}, {'username': 'Expert2'}]
     })
 
-def tag(request, tag_name):  # Исправьте параметр на tag_name
+def tag(request, tag_name): 
     questions = []
     for i in range(1, 15):
         questions.append({
@@ -125,21 +124,32 @@ def tag(request, tag_name):  # Исправьте параметр на tag_name
     })
 
 def ask(request):
-    popular_tags = [
-        {'name': 'python'}, 
-        {'name': 'django'}, 
-        {'name': 'web'}
-    ]
-    
-    best_members = [
-        {'username': 'Helper1'},
-        {'username': 'Helper2'}
-    ]
-    
-    return render(request, 'ask.html', {
-        'popular_tags': popular_tags,
-        'best_members': best_members
-    })
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        text = request.POST.get('text')
+        tags = request.POST.get('tags')
+
+        if not title or not text or not tags:
+            messages.error(request, 'Пожалуйста, заполните все поля')
+            return redirect('ask')
+
+        question = {
+            'title': title,
+            'text': text,
+            'tags': tags.split(','),
+            'author': 'Аноним'
+        }
+
+        messages.success(request, 'Вопрос успешно создан!')
+        return redirect('new_questions')
+    else:
+        popular_tags = ['python', 'django', 'web']
+        best_members = ['User1', 'User2']
+
+        return render(request, 'ask.html', {
+            'popular_tags': popular_tags,
+            'best_members': best_members
+        })
 
 def login(request):
     if request.method == 'POST':
@@ -170,8 +180,6 @@ def login(request):
 
 def signup(request):
     if request.method == 'POST':
-        # Здесь должна быть логика регистрации
-        # Например, создание нового пользователя
         messages.success(request, 'Registration successful! Please log in.')
         return redirect('login')
     
@@ -198,7 +206,6 @@ def logout(request):
 @login_required
 def settings(request):
     if request.method == 'POST':
-        # Здесь должна быть логика обновления профиля
         messages.success(request, 'Settings updated successfully!')
         return redirect('settings')
     
@@ -216,5 +223,5 @@ def settings(request):
     return render(request, 'settings.html', {
         'popular_tags': popular_tags,
         'best_members': best_members,
-        'user': request.user  # Передаем текущего пользователя
+        'user': request.user  
     })
