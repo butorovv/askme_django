@@ -1,0 +1,50 @@
+{% load static %}
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-2 text-center">
+                <div class="avatar-container mb-2">
+                    {% static 'images/avatar.jpg' as default_avatar %}
+                    <img src="{{ question.author.avatar_url|default:default_avatar }}"
+                         alt="User avatar"
+                         class="img-fluid rounded-circle">
+                </div>
+                <div class="btn-group vote-buttons">
+                    <button class="btn btn-outline-success btn-sm">▲</button>
+                    <span class="btn btn-light btn-sm">{{ question.rating|default:0 }}</span>
+                    <button class="btn btn-outline-danger btn-sm">▼</button>
+                </div>
+            </div>
+            <div class="col">
+                <h5 class="card-title">
+                    {% if question.id %}
+                        <a href="{% url 'question' question.id %}" class="text-decoration-none">
+                            {{ question.title|default:"No title" }}
+                        </a>
+                    {% else %}
+                        {{ question.title|default:"No title" }}
+                    {% endif %}
+                </h5>
+                <p class="card-text">{{ question.text|default:"No text" }}</p>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                    {% if question.id %}
+                        <a href="{% url 'question' question.id %}" class="text-muted">
+                            Answers ({{ question.answers_count|default:0 }})
+                        </a>
+                    {% else %}
+                        <span class="text-muted">Answers ({{ question.answers_count|default:0 }})</span>
+                    {% endif %}
+                    <div class="tags">
+                        {% for tag in question.tags.all %}
+                            <a href="{% url 'tag' tag.name %}" class="badge bg-primary text-decoration-none me-1">
+                                {{ tag.name }}
+                            </a>
+                        {% empty %}
+                            <span class="text-muted">No tags</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

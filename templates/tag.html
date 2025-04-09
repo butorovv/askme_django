@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Questions tagged "{{ tag }}"{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center gap-2 mb-4">
+    <h1>Questions tagged "{{ tag }}"</h1>
+</div>
+
+<articles class="d-flex gap-3 flex-column">
+    {% for question in questions %}
+        {% include 'question_item.html' %}
+    {% endfor %}
+</articles>
+
+{% include 'pagination.html' %}
+{% endblock %}

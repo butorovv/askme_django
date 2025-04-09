@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Hot Questions{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center gap-2 mb-4">
+    <h1>Hot Questions</h1>
+    <a href="{% url 'new_questions' %}" class="text-decoration-none">New Questions</a>
+</div>
+
+<articles class="d-flex gap-3 flex-column">
+    {% for question in questions %}
+        {% include 'question_item.html' %}
+    {% empty %}
+        <div class="alert alert-info">No hot questions yet</div>
+    {% endfor %}
+</articles>
+
+{% include 'pagination.html' %}
+{% endblock %}
