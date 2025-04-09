@@ -113,11 +113,13 @@ def tag(request, tag_name):  # Исправьте параметр на tag_name
         {'username': 'Charlie'}
     ]
 
-    page = paginate(questions, request)
+    page, paginator = paginate(questions, request)
 
     return render(request, 'tag.html', {
         'tag': tag_name,
-        'questions': page,
+        'questions': page.object_list,
+        'page_obj': page,
+        'paginator': paginator,
         'popular_tags': popular_tags,
         'best_members': best_members
     })
