@@ -1,21 +1,32 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.db.models import Count, Sum
+from django.db.models import Count
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    objects = models.Manager()
+    
     def __str__(self):
         return self.user.username
+
+    class Meta:
+        verbose_name_plural = "Profiles"
+        ordering = ['-id']
 
 
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
+    objects = models.Manager()
     
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name_plural = "Tags"
+        ordering = ['name']
 
 
 class QuestionManager(models.Manager):
@@ -23,7 +34,7 @@ class QuestionManager(models.Manager):
         return self.order_by('-created_at')
     
     def best(self):
-        return self.annotate(total_likes=Count('questionlike')).order_by('-total_likes')
+        return self.annotate(likes_count=Count('questionlike')).order_by('-likes_count', '-created_at')
     
     def by_tag(self, tag_name):
         return self.filter(tags__name=tag_name)
@@ -41,15 +52,19 @@ class Question(models.Model):
     
     def __str__(self):
         return self.title
-    
     def get_absolute_url(self):
         return f'/question/{self.id}/'
-    
     def likes_count(self):
-        return self.questionlike_set.count()
-    
+        return self.questionlike_set.filter(value=1).count()
+    def dislikes_count(self):
+        return self.questionlike_set.filter(value=-1).count()
     def answers_count(self):
         return self.answer_set.count()
+    
+
+    class Meta:
+        verbose_name_plural = "Questions"
+        ordering = ['-created_at']
 
 
 class Answer(models.Model):
@@ -66,6 +81,10 @@ class Answer(models.Model):
     def likes_count(self):
         return self.answerlike_set.count()
 
+    class Meta:
+        verbose_name_plural = "Answers"
+        ordering = ['-is_correct', '-created_at']
+
 
 class QuestionLike(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
@@ -74,6 +93,7 @@ class QuestionLike(models.Model):
     
     class Meta:
         unique_together = ('user', 'question')
+        verbose_name_plural = "Question Likes"
     
     def __str__(self):
         return f"{self.user.user.username} {'likes' if self.value > 0 else 'dislikes'} {self.question.title}"
@@ -91,6 +111,7 @@ class AnswerLike(models.Model):
     
     class Meta:
         unique_together = ('user', 'answer')
+        verbose_name_plural = "Answer Likes"
     
     def __str__(self):
         return f"{self.user.user.username} {'likes' if self.value > 0 else 'dislikes'} answer to {self.answer.question.title}"

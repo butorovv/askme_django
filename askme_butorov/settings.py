@@ -76,8 +76,15 @@ WSGI_APPLICATION = 'askme_butorov.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'askme_db',          
+        'USER': 'askme_user',        
+        'PASSWORD': 'George2005',    
+        'HOST': 'localhost',         
+        'PORT': '5432',
+        'OPTIONS': {
+            'client_encoding': 'UTF8',  # Явно указываем кодировку
+        },              
     }
 }
 
@@ -119,6 +126,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  
 
+LOGIN_URL = '/login/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

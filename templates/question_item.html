@@ -10,9 +10,10 @@
                          class="img-fluid rounded-circle">
                 </div>
                 <div class="btn-group vote-buttons">
-                    <button class="btn btn-outline-success btn-sm">▲</button>
-                    <span class="btn btn-light btn-sm">{{ question.rating|default:0 }}</span>
-                    <button class="btn btn-outline-danger btn-sm">▼</button>
+                    <a href="{% url 'like_question' question.id %}" class="btn btn-outline-success btn-sm">▲</a>
+                    <span class="btn btn-light btn-sm">{{ question.likes_count }}</span>
+                    <a href="{% url 'dislike_question' question.id %}" class="btn btn-outline-danger btn-sm">▼</a>
+                    <span class="btn btn-light btn-sm">{{ question.dislikes_count }}</span>
                 </div>
             </div>
             <div class="col">
