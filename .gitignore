@@ -1,48 +1,19 @@
-﻿# Virtual environment
-venv/
-.env/
-.venv/
-env/
-ENV/
-
-# Python cache
+﻿# Python
 __pycache__/
 *.py[cod]
 *.pyo
 *.so
-.Python
+*.pyd
 
-# Django
-*.log
-*.pot
+# Database
 db.sqlite3
-media/
-staticfiles/
+db.sqlite3-journal
 
-# Environment variables
-.env
-.env.local
-*.env
-secrets.json
+# Virtual environment
+venv/
+.env/
+.venv/
 
-# IDE files
+# IDE
 .idea/
 .vscode/
-*.swp
-*.swo
-
-# Database (except migrations!)
-*.db
-*.sql
-*.dump
-
-# Packages and builds
-*.egg-info/
-dist/
-build/
-pip-wheel-metadata/
-
-# Tests and coverage
-.coverage
-htmlcov/
-.pytest_cache/
