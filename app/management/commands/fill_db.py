@@ -5,6 +5,7 @@ import random
 from faker import Faker
 from tqdm import tqdm
 
+
 class Command(BaseCommand):
     help = 'Fills the database with test data'
 

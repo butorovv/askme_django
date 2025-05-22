@@ -11,6 +11,7 @@ def paginate(objects_list, request, per_page=10):
     paginator = Paginator(objects_list, per_page)
     page_number = request.GET.get('page')
 
+
     try:
         page = paginator.page(page_number)
     except PageNotAnInteger:

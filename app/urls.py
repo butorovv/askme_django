@@ -5,6 +5,7 @@ from django.urls import path
 from app import views
 
 
+
 urlpatterns = [
     path('', views.new_questions, name='new_questions'),
     path('hot/', views.hot_questions, name='hot_questions'),

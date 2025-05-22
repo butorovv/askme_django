@@ -8,6 +8,7 @@
     <a href="{% url 'hot_questions' %}">Hot Questions</a>
 </div>
 
+
 <articles class="d-flex gap-3 flex-column">
     {% for question in questions %}
         {% include 'question_item.html' %}

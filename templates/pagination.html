@@ -11,6 +11,7 @@
             </li>
         {% endif %}
 
+        
         {% for num in page_range %}
             <li class="page-item {% if num == page_obj.number %}active{% endif %}">
                 <a class="page-link" href="?page={{ num }}">{{ num }}</a>
