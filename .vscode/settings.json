@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "C:\\study\\VK_ED\\WEB\\askme_butorov\\venv\\Lib\\site-packages"
+    ]
+}
