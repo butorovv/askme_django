@@ -6,6 +6,7 @@ from django.contrib import messages
 from .models import Question, Tag, Answer, Profile, User, QuestionLike, AnswerLike
 from django.db.models import Count
 
+
 def paginate(objects_list, request, per_page=10):
     paginator = Paginator(objects_list, per_page)
     page_number = request.GET.get('page')
